@@ -50,13 +50,18 @@ class Mypromise {
     this.#runCallbacks();
   }
 
-  then(cb) {
-    this.#thenCbs.push(cb);
+  then(thenCb, catchCb) {
+    if (thenCb) this.#thenCbs.push(thenCb);
+    if (catchCb) this.#catchCbs.push(catchCb);
 
     this.#runCallbacks();
-
-    return new Promise();
   }
+
+  catch(cb) {
+    this.then(undefined, cb);
+  }
+
+  finally(cb) {}
 }
 
 module.exports = Mypromise;
@@ -64,4 +69,7 @@ module.exports = Mypromise;
 const p = new Mypromise((resolve, reject) => {
   resolve(500);
 }).then();
-p.then().then().catch();
+p.then(
+  () => {},
+  () => {}
+);
