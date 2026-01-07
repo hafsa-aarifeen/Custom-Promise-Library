@@ -105,7 +105,16 @@ class Mypromise {
   }
 
   finally(cb) {
-    return undefined;
+    return this.then(
+      (result) => {
+        cb();
+        return result;
+      },
+      (result) => {
+        cb();
+        throw result;
+      }
+    );
   }
 }
 
@@ -115,7 +124,7 @@ module.exports = Mypromise;
 //   return "foo";
 // }).then();
 
-// Promise.then().catch().then();
+// p.then().finally().catch();
 
 // const p = new Mypromise((resolve, reject) => {
 //   resolve(500);
